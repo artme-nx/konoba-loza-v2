@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konoba Loza — Pakoštane, Dalmacija</title>
+  <meta name="description" content="Konoba Loza u Pakoštanima — domaća kuhinja između Jadranskog mora i Vranskog jezera. Svježa riba, domaće vino, janjad ispod peke, u hladu stare loze.">
+  <meta property="og:title" content="Konoba Loza — Pakoštane">
+  <meta property="og:description" content="U hladu loze, između mora i jezera. Domaće vino, svježa riba, tradicija.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon: vine leaf SVG inline -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🍃</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===========================
+       DESIGN TOKENS
+    =========================== */
+    :root {
+      --parchment: #F6F2E6;
+      --parchment-2: #EDE6D3;
+      --ink: #2E2A22;
+      --vine: #4A6035;
+      --vine-soft: #6A8052;
+      --terra: #B06040;
+      --stone: #9A9082;
+      --gold-line: #C8A84B;
+      --line: rgba(46,42,34,0.13);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Spectral', Georgia, serif;
+      --header-h: 76px;
+    }
+
+    /* ===========================
+       RESET & BASE
+    =========================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.75;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ===========================
+       GRAIN OVERLAY
+    =========================== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.045;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* All sections above grain */
+    header, section, footer, .mobile-nav, .mobile-bar {
+      position: relative;
+      z-index: 2;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ===========================
+       TYPOGRAPHY HELPERS
+    =========================== */
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--vine);
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: 0.01em;
+    }
+
+    h1 { font-size: clamp(52px, 7vw, 96px); }
+    h2 { font-size: clamp(38px, 4.5vw, 64px); }
+    h3 { font-size: clamp(22px, 2.5vw, 30px); }
+
+    .text-terra { color: var(--terra); }
+    .text-vine  { color: var(--vine); }
+    .text-stone { color: var(--stone); }
+
+    /* ===========================
+       REVEAL ANIMATION BASE
+    =========================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.48s; }
+
+    /* Timeline reveal from left */
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal-left.in-view {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ===========================
+       HEADER
+    =========================== */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(24px, 4vw, 60px);
+      transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    header.scrolled {
+      background: rgba(246,242,230,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 var(--line);
+    }
+
+    .header-logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: 0.03em;
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+      z-index: 2;
+    }
+    .header-logo .logo-top {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .header-logo .logo-main {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .header-logo .logo-main em {
+      font-style: italic;
+      color: var(--vine);
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    nav a {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(46,42,34,0.65);
+      transition: color 0.2s ease;
+    }
+    nav a:hover { color: var(--vine); }
+
+    .header-cta {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn-outline {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--vine);
+      border: 1px solid var(--vine);
+      padding: 10px 20px;
+      border-radius: 2px;
+      transition: background 0.25s ease, color 0.25s ease;
+      white-space: nowrap;
+    }
+    .btn-outline:hover {
+      background: var(--vine);
+      color: var(--parchment);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      z-index: 200;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--ink);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ===========================
+       MOBILE NAV OVERLAY
+    =========================== */
+    .mobile-nav {
+      position: fixed;
+      inset: 0;
+      background: var(--parchment);
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .mobile-nav.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .mobile-nav a {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      transition: color 0.2s ease;
+    }
+    .mobile-nav a:hover { color: var(--vine); }
+    .mobile-nav .mob-cta {
+      margin-top: 8px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--vine);
+      border: 1px solid var(--vine);
+      padding: 14px 32px;
+      border-radius: 2px;
+    }
+
+    /* ===========================
+       HERO — 4-IMAGE EDITORIAL GRID
+    =========================== */
+    #hero {
+      padding-top: calc(var(--header-h) + 60px);
+      padding-bottom: 80px;
+      padding-left: clamp(24px, 5vw, 80px);
+      padding-right: clamp(24px, 5vw, 80px);
+      background: var(--parchment);
+    }
+
+    .hero-eyebrow {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero-text {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .hero-text h1 {
+      margin-bottom: 20px;
+    }
+
+    .hero-text h1 em {
+      font-style: italic;
+      color: var(--vine);
+    }
+
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.2vw, 26px);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--stone);
+      letter-spacing: 0.02em;
+    }
+
+    /* H1 word spans for animation */
+    .hero-text h1 .word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+    .hero-text h1 .word-inner {
+      display: inline-block;
+    }
+
+    /* 4-image editorial grid */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 420px 200px;
+      gap: 10px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-grid-img {
+      overflow: hidden;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    /* Large image: spans col 1-2, rows 1-2 */
+    .hero-grid-img.large {
+      grid-column: 1 / 3;
+      grid-row: 1 / 3;
+    }
+
+    /* Top right */
+    .hero-grid-img.top-right {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    /* Bottom right — split into two side by side using inner grid */
+    .hero-grid-bottom-right {
+      grid-column: 3;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .hero-grid-bottom-right .sub-img {
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .hero-grid img,
+    .hero-grid-bottom-right img {
+      filter: sepia(0.2) contrast(1.04) saturate(0.9);
+      transition: filter 0.5s ease;
+    }
+
+    /* Hero image fade-in states */
+    .hero-grid-img,
+    .hero-grid-bottom-right {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero-grid-img.loaded,
+    .hero-grid-bottom-right.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===========================
+       GRAPEVINE SVG DIVIDER
+    =========================== */
+    .vine-divider {
+      display: flex;
+      justify-content: center;
+      margin: 40px auto;
+    }
+
+    .vine-divider svg {
+      width: 200px;
+      height: 50px;
+      stroke: var(--vine);
+      stroke-width: 1.4;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ===========================
+       SECTION BASE
+    =========================== */
+    section {
+      padding: clamp(80px, 10vw, 140px) clamp(24px, 6vw, 100px);
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-inner.narrow {
+      max-width: 720px;
+      text-align: center;
+    }
+
+    .section-inner.narrow p {
+      color: rgba(46,42,34,0.75);
+    }
+
+    /* ===========================
+       SECTION: O NAMA / MANIFEST
+    =========================== */
+    #o-nama {
+      background: var(--parchment-2);
+    }
+
+    .manifest-lead {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.8vw, 34px);
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--ink);
+      margin: 32px 0 24px;
+    }
+
+    .manifest-body {
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(46,42,34,0.72);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ===========================
+       SECTION: OD LOZE DO STOLA (TIMELINE)
+    =========================== */
+    #timeline {
+      background: var(--parchment);
+    }
+
+    .timeline-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .timeline-header h2 {
+      margin-top: 16px;
+    }
+
+    .timeline-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Vertical timeline line */
+    .timeline-wrapper::before {
+      content: '';
+      position: absolute;
+      left: 112px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--vine-soft);
+      opacity: 0.35;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 0 40px;
+      margin-bottom: 52px;
+      position: relative;
+    }
+
+    .timeline-item:last-child { margin-bottom: 0; }
+
+    .timeline-season {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--terra);
+      padding-top: 4px;
+      text-align: right;
+      padding-right: 20px;
+      line-height: 1.3;
+    }
+
+    .timeline-content {
+      position: relative;
+      padding-bottom: 0;
+    }
+
+    /* Dot on the line */
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 8px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--vine-soft);
+      border: 1.5px solid var(--parchment);
+    }
+
+    .timeline-content h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .timeline-content p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(46,42,34,0.68);
+      line-height: 1.7;
+    }
+
+    /* ===========================
+       SECTION: JELOVNIK
+    =========================== */
+    #jelovnik {
+      background: var(--parchment);
+    }
+
+    .jelovnik-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .jelovnik-header h2 {
+      margin-top: 14px;
+    }
+
+    .jelovnik-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto 32px;
+    }
+
+    .menu-card {
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 36px 32px;
+      background: rgba(246,242,230,0.5);
+    }
+
+    .menu-card-title {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--vine);
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .menu-card ul {
+      list-style: none;
+    }
+
+    .menu-card ul li {
+      font-family: var(--font-body);
+      font-size: 15.5px;
+      font-weight: 300;
+      color: rgba(46,42,34,0.78);
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(46,42,34,0.06);
+      line-height: 1.5;
+    }
+
+    .menu-card ul li:last-child { border-bottom: none; }
+
+    /* Wine card special */
+    .menu-card.wine-card {
+      grid-column: 1 / -1;
+      background: var(--vine);
+      border-color: transparent;
+      color: var(--parchment);
+    }
+
+    .menu-card.wine-card .menu-card-title {
+      color: rgba(246,242,230,0.6);
+      border-color: rgba(246,242,230,0.15);
+    }
+
+    .menu-card.wine-card .wine-quote {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 19px;
+      color: rgba(246,242,230,0.85);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .menu-card.wine-card ul li {
+      color: rgba(246,242,230,0.75);
+      border-color: rgba(246,242,230,0.1);
+    }
+
+    .jelovnik-note {
+      text-align: center;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--stone);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ===========================
+       SECTION: PAKOŠTANE & JEZERO
+    =========================== */
+    #jezero {
+      background: var(--parchment-2);
+      padding: 0;
+    }
+
+    .jezero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 580px;
+    }
+
+    .jezero-image {
+      overflow: hidden;
+    }
+
+    .jezero-image img {
+      height: 100%;
+      min-height: 500px;
+      filter: sepia(0.18) contrast(1.04) saturate(0.88);
+    }
+
+    .jezero-text {
+      padding: clamp(60px, 8vw, 110px) clamp(40px, 6vw, 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .jezero-text .eyebrow {
+      margin-bottom: 20px;
+    }
+
+    .jezero-text h2 {
+      font-size: clamp(30px, 3.5vw, 48px);
+      margin-bottom: 28px;
+      line-height: 1.12;
+    }
+
+    .jezero-text p {
+      font-family: var(--font-body);
+      font-size: 15.5px;
+      font-weight: 300;
+      color: rgba(46,42,34,0.72);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .jezero-stat {
+      display: flex;
+      gap: 32px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--terra);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+
+    /* ===========================
+       SECTION: GALERIJA
+    =========================== */
+    #galerija {
+      background: var(--parchment-2);
+    }
+
+    .galerija-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .galerija-header h2 {
+      margin-top: 14px;
+    }
+
+    .masonry-grid {
+      columns: 3;
+      column-gap: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .masonry-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: sepia(0.18) contrast(1.05) saturate(0.9);
+      transition: filter 0.5s ease, transform 0.5s ease;
+    }
+
+    .masonry-item:hover img {
+      filter: sepia(0.04) contrast(1.02) saturate(1.0);
+      transform: scale(1.04);
+    }
+
+    /* ===========================
+       SECTION: REZERVIRAJ STOL
+    =========================== */
+    #rezerviraj {
+      background: var(--parchment);
+      text-align: center;
+    }
+
+    #rezerviraj h2 {
+      margin: 16px 0 20px;
+    }
+
+    .rezerviraj-sub {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--stone);
+      margin-bottom: 40px;
+    }
+
+    .phone-link {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 500;
+      color: var(--terra);
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+      transition: color 0.2s ease;
+    }
+
+    .phone-link:hover { color: var(--vine); }
+
+    .rezerviraj-caption {
+      font-family: var(--font-body);
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--stone);
+      margin-bottom: 48px;
+    }
+
+    /* Hours table */
+    .hours-table {
+      display: inline-grid;
+      grid-template-columns: auto auto;
+      gap: 4px 32px;
+      margin: 0 auto 24px;
+      text-align: left;
+    }
+
+    .hours-day {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--stone);
+      letter-spacing: 0.06em;
+    }
+
+    .hours-time {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .season-note {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--terra);
+      margin-top: 20px;
+    }
+
+    /* ===========================
+       SECTION: KONTAKT & KARTA
+    =========================== */
+    #kontakt {
+      background: var(--parchment-2);
+      padding: 0;
+    }
+
+    .kontakt-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .kontakt-text {
+      padding: clamp(60px, 8vw, 100px) clamp(40px, 6vw, 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .kontakt-text .eyebrow {
+      margin-bottom: 20px;
+    }
+
+    .kontakt-text h2 {
+      font-size: clamp(28px, 3vw, 42px);
+      margin-bottom: 36px;
+    }
+
+    .contact-item {
+      margin-bottom: 24px;
+    }
+
+    .contact-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--stone);
+      margin-bottom: 4px;
+    }
+
+    .contact-value {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .contact-value a {
+      color: var(--terra);
+      transition: color 0.2s ease;
+    }
+    .contact-value a:hover { color: var(--vine); }
+
+    .directions-note {
+      margin-top: 32px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(46,42,34,0.6);
+      line-height: 1.7;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+    }
+
+    .kontakt-map {
+      min-height: 460px;
+    }
+
+    .kontakt-map iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 460px;
+      border: none;
+      display: block;
+      filter: sepia(0.15) contrast(1.02);
+    }
+
+    /* ===========================
+       FOOTER
+    =========================== */
+    footer {
+      background: var(--parchment-2);
+      border-top: 1px solid var(--line);
+      padding: 60px clamp(24px, 6vw, 100px) 40px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
+      gap: 40px;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .footer-logo em {
+      font-style: italic;
+      color: var(--vine);
+    }
+
+    .footer-address {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--stone);
+      line-height: 1.7;
+    }
+
+    .footer-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--stone);
+      text-align: center;
+    }
+
+    .footer-right {
+      text-align: right;
+    }
+
+    .footer-copy {
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: rgba(154,144,130,0.7);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .footer-phone a {
+      font-family: var(--font-display);
+      font-size: 16px;
+      color: var(--terra);
+      transition: color 0.2s ease;
+    }
+    .footer-phone a:hover { color: var(--vine); }
+
+    /* ===========================
+       MOBILE STICKY BAR
+    =========================== */
+    .mobile-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 58px;
+      background: var(--vine);
+      align-items: center;
+      justify-content: center;
+      z-index: 90;
+    }
+
+    .mobile-bar a {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--parchment);
+    }
+
+    /* ===========================
+       GOLD DIVIDER LINE
+    =========================== */
+    .gold-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--gold-line);
+      margin: 24px auto;
+      opacity: 0.6;
+    }
+
+    /* ===========================
+       RESPONSIVE — MOBILE
+    =========================== */
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .btn-outline.desktop-only { display: none; }
+      .hamburger { display: flex; }
+      .mobile-bar { display: flex; }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .hero-grid-img.large {
+        grid-column: 1;
+        grid-row: 1;
+        height: 340px;
+      }
+
+      .hero-grid-img.top-right,
+      .hero-grid-bottom-right {
+        display: none;
+      }
+
+      .jelovnik-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-card.wine-card {
+        grid-column: 1;
+      }
+
+      .jezero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .jezero-image {
+        min-height: 280px;
+      }
+
+      .masonry-grid {
+        columns: 2;
+      }
+
+      .kontakt-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .kontakt-map {
+        min-height: 300px;
+      }
+      .kontakt-map iframe {
+        min-height: 300px;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-right { text-align: center; }
+
+      /* Timeline on mobile */
+      .timeline-wrapper::before { display: none; }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .timeline-season {
+        text-align: left;
+        padding-right: 0;
+      }
+
+      .timeline-content::before { display: none; }
+
+      body { padding-bottom: 58px; }
+    }
+
+    @media (max-width: 560px) {
+      .masonry-grid { columns: 1; }
+      .hero-grid-img.large { height: 260px; }
+    }
+
+    /* ===========================
+       REDUCED MOTION
+    =========================== */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left,
+      .hero-grid-img, .hero-grid-bottom-right {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===========================
+       HEADER
+  =========================== -->
+  <header id="site-header">
+    <a href="#hero" class="header-logo" aria-label="Konoba Loza — Pakoštane">
+      <span class="logo-top">Konoba</span>
+      <span class="logo-main"><em>Loza</em></span>
+    </a>
+
+    <nav aria-label="Glavna navigacija">
+      <a href="#o-nama">Priča</a>
+      <a href="#jelovnik">Jelovnik</a>
+      <a href="#jelovnik">Vina</a>
+      <a href="#jezero">Pakoštane</a>
+      <a href="#galerija">Galerija</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="header-cta">
+      <a href="tel:+385919819721" class="btn-outline desktop-only">Rezerviraj stol</a>
+      <button class="hamburger" id="hamburger" aria-label="Otvori izbornik" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===========================
+       MOBILE NAV OVERLAY
+  =========================== -->
+  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Navigacija">
+    <a href="#o-nama" class="mob-link">Priča</a>
+    <a href="#jelovnik" class="mob-link">Jelovnik</a>
+    <a href="#jelovnik" class="mob-link">Vina</a>
+    <a href="#jezero" class="mob-link">Pakoštane</a>
+    <a href="#galerija" class="mob-link">Galerija</a>
+    <a href="#kontakt" class="mob-link">Kontakt</a>
+    <a href="tel:+385919819721" class="mob-cta">Rezerviraj stol</a>
+  </div>
+
+  <!-- ===========================
+       HERO — 4-IMAGE EDITORIAL GRID
+  =========================== -->
+  <section id="hero">
+    <div class="hero-eyebrow">
+      <span class="eyebrow">Pakoštane · Dalmacija · od loze do stola</span>
+    </div>
+
+    <div class="hero-text">
+      <h1 id="hero-h1">Konoba <em>Loza</em></h1>
+      <p class="hero-tagline">U hladu loze, između mora i jezera.</p>
+    </div>
+
+    <!-- 4-image grid -->
+    <div class="hero-grid" id="hero-grid">
+      <!-- Large image: col 1-2, rows 1-2 -->
+      <div class="hero-grid-img large" id="hg1">
+        <img src="https://loremflickr.com/1000/900/vine,pergola,dalmatia?lock=201"
+             alt="Loza — pergola i vinova loza"
+             loading="eager">
+      </div>
+
+      <!-- Top right -->
+      <div class="hero-grid-img top-right" id="hg2">
+        <img src="https://loremflickr.com/500/450/vineyard,grapes,croatia?lock=202"
+             alt="Vinograd i grožđe"
+             loading="eager">
+      </div>
+
+      <!-- Bottom right: two sub-images -->
+      <div class="hero-grid-bottom-right" id="hg3">
+        <div class="sub-img">
+          <img src="https://loremflickr.com/500/220/wine,glass,daylight?lock=203"
+               alt="Vino na danjem svjetlu"
+               loading="eager">
+        </div>
+        <div class="sub-img">
+          <img src="https://loremflickr.com/500/220/olive,grove,croatia?lock=204"
+               alt="Maslinovi gaj"
+               loading="eager">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       O NAMA — MANIFEST
+  =========================== -->
+  <section id="o-nama">
+    <div class="section-inner narrow">
+      <span class="eyebrow reveal">Naša priča</span>
+
+      <div class="vine-divider reveal reveal-delay-1" aria-hidden="true">
+        <!-- Grapevine line-art SVG -->
+        <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Main vine branch -->
+          <path d="M10,38 C30,38 35,22 55,22 C70,22 75,32 90,30 C105,28 110,18 130,18 C148,18 155,28 175,26 C185,25 192,20 198,18"/>
+          <!-- Tendrils -->
+          <path d="M55,22 C52,14 48,8 44,5"/>
+          <path d="M90,30 C88,20 92,12 96,8"/>
+          <path d="M130,18 C128,10 132,4 136,2"/>
+          <!-- Leaves left -->
+          <path d="M44,5 C40,2 35,4 36,9 C37,14 42,14 44,10 C46,6 42,2 38,4"/>
+          <!-- Leaves middle -->
+          <path d="M96,8 C92,4 87,6 88,11 C89,16 94,15 96,11 C98,7 94,3 90,5"/>
+          <!-- Leaves right -->
+          <path d="M136,2 C132,-1 127,1 128,6 C129,11 134,10 136,6 C138,2 134,-1 130,1"/>
+          <!-- Small grape clusters -->
+          <circle cx="58" cy="26" r="2.5"/>
+          <circle cx="63" cy="28" r="2"/>
+          <circle cx="61" cy="31" r="2.2"/>
+          <circle cx="68" cy="29" r="1.8"/>
+          <circle cx="65" cy="33" r="2"/>
+
+          <circle cx="148" cy="22" r="2.5"/>
+          <circle cx="153" cy="24" r="2"/>
+          <circle cx="151" cy="27" r="2.2"/>
+          <circle cx="158" cy="25" r="1.8"/>
+          <circle cx="155" cy="29" r="2"/>
+        </svg>
+      </div>
+
+      <h2 class="reveal reveal-delay-2">Stol pod lozom</h2>
+      <div class="gold-rule reveal reveal-delay-3"></div>
+
+      <p class="manifest-lead reveal reveal-delay-3">
+        Konoba Loza izrasla je iz jedne jednostavne istine: najbolja hrana nije ona koja se izmišlja, nego ona koja se pamti.
+      </p>
+
+      <p class="manifest-body reveal reveal-delay-4">
+        U Pakoštanima, gdje Jadransko more i Vransko jezero dijele samo uski pojas dalmatinske zemlje, pronašli smo naš dom. Sjedimo u hladu stare loze, kuhamo po majčinim receptima, otvaramo domaće vino od grožđa koje raste na ovoj istoj zemlji. Riba dolazi svako jutro s mora. Janjad se peče ispod žara. Svaki obrok je priča o ovom kraju — o kamenu, suncu, soli i mirisu mora pomješanog s mirisom borovine.
+      </p>
+
+    </div>
+
+    <!-- About atmospheric image — full width, below the centered text -->
+    <div class="about-image-strip reveal" style="max-width:900px;margin:48px auto 0;overflow:hidden;border-radius:2px;">
+      <img src="https://loremflickr.com/900/600/vineyard,family,tavern?lock=205"
+           alt="Konoba Loza — obiteljska tradicija i vinograd"
+           loading="lazy"
+           style="width:100%;height:360px;object-fit:cover;filter:sepia(0.2) contrast(1.04) saturate(0.9);">
+    </div>
+  </section>
+
+  <!-- ===========================
+       OD LOZE DO STOLA — TIMELINE
+  =========================== -->
+  <section id="timeline">
+    <div class="section-inner">
+      <div class="timeline-header">
+        <span class="eyebrow reveal">Naš put</span>
+        <h2 class="reveal reveal-delay-1">Od loze do stola</h2>
+        <div class="gold-rule reveal reveal-delay-2"></div>
+      </div>
+
+      <div class="timeline-wrapper">
+
+        <div class="timeline-item">
+          <div class="timeline-season reveal-left">Proljeće</div>
+          <div class="timeline-content reveal-left reveal-delay-1">
+            <h3>Loza se budi</h3>
+            <p>Vinova loza cvate iznad naših stolova. Prvi mladici probijaju staru šipu, drvo zazeleni, i znamo — sezona počinje. Čistimo kamen, postavljamo stolice, otvaramo kapije konobe.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-season reveal-left">Ljeto</div>
+          <div class="timeline-content reveal-left reveal-delay-1">
+            <h3>More donosi ulov</h3>
+            <p>Svježa riba stiže svako jutro s Jadrana. Gradela gori od zore. Lignje, brancin, orada — sve što more dâ toga dana, mi skuhamo toga dana. Ništa zamrznuto, ništa iz jučer.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-season reveal-left">Jesen</div>
+          <div class="timeline-content reveal-left reveal-delay-1">
+            <h3>Berba i vino</h3>
+            <p>Berba grožđa. Pravljenje domaćeg vina po starom receptu — bez žurbe, bez kompromisa. Vino odleži onoliko koliko treba. Kad bude gotovo, bit će na vašem stolu.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-season reveal-left">Zima</div>
+          <div class="timeline-content reveal-left reveal-delay-1">
+            <h3>Peka i strpljenje</h3>
+            <p>Ispod žara, janjetina i riba čekaju sat, dva, tri. Peka ne trpi žurbu. Zima je pravo doba za taj ritual — za dim, za miris, za okus koji se ne može požuriti.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-season reveal-left" style="color: var(--vine);">Uvijek</div>
+          <div class="timeline-content reveal-left reveal-delay-1">
+            <h3>Domaće srce</h3>
+            <p>Domaće vino. Domaće ulje. Domaće srce. Bez obzira na godišnje doba, to se ne mijenja. Ovo nije samo konoba — ovo je naš dom, i svaki gost sjedi za našim stolom.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       JELOVNIK
+  =========================== -->
+  <section id="jelovnik" style="background: var(--parchment);">
+    <div class="section-inner">
+      <div class="jelovnik-header">
+        <span class="eyebrow reveal">Kuhinja</span>
+        <h2 class="reveal reveal-delay-1">Naša kuhinja</h2>
+        <div class="gold-rule reveal reveal-delay-2"></div>
+      </div>
+
+      <div class="jelovnik-grid">
+        <!-- Riba -->
+        <div class="menu-card reveal">
+          <div class="menu-card-title">Riba s gradela</div>
+          <ul>
+            <li>Riba s gradela <em style="font-family:var(--font-display);color:var(--stone);font-size:13px"> — svježa, prema dnevnom ulovu</em></li>
+            <li>Lignje na žaru</li>
+            <li>Hobotnica na salatu</li>
+            <li>Brujet od ribe</li>
+          </ul>
+        </div>
+
+        <!-- Peka -->
+        <div class="menu-card reveal reveal-delay-1">
+          <div class="menu-card-title">Ispod peke</div>
+          <ul>
+            <li>Janjetina ispod peke <em style="font-family:var(--font-display);color:var(--stone);font-size:13px"> — 24h najava</em></li>
+            <li>Peka od ribe</li>
+            <li>Teletina s povrćem</li>
+          </ul>
+        </div>
+
+        <!-- Jezerska riba -->
+        <div class="menu-card reveal reveal-delay-2">
+          <div class="menu-card-title">Jezerska riba i divljač</div>
+          <ul>
+            <li>Šaran iz Vranskog jezera</li>
+            <li>Divlja patka <em style="font-family:var(--font-display);color:var(--stone);font-size:13px"> — sezonska</em></li>
+            <li>Zečetina u umaku od rajčice</li>
+          </ul>
+        </div>
+
+        <!-- Domaće -->
+        <div class="menu-card reveal reveal-delay-3">
+          <div class="menu-card-title">Domaće i seljačko</div>
+          <ul>
+            <li>Pašticada s njokima</li>
+            <li>Domaći sir i pršut</li>
+            <li>Fritule <em style="font-family:var(--font-display);color:var(--stone);font-size:13px"> — domaće</em></li>
+          </ul>
+        </div>
+
+        <!-- Wine card -->
+        <div class="menu-card wine-card reveal">
+          <div class="menu-card-title">Vina kuće</div>
+          <p class="wine-quote">"Naše vino raste ovdje, ispod iste loze koja hladi naš dvor."</p>
+          <ul>
+            <li>Bijelo domaće vino — suho, aromatično</li>
+            <li>Crno domaće vino — autohtone sorte</li>
+            <li>Prošek — dalmatinski desertni, po babinoj recepturi</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="jelovnik-note reveal">
+        Jelovnik prati godišnja doba i svježi ulov.<br>Pitajte nas.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===========================
+       PAKOŠTANE & VRANSKO JEZERO
+  =========================== -->
+  <section id="jezero" style="padding:0;">
+    <div class="jezero-inner">
+      <div class="jezero-image reveal">
+        <img src="https://loremflickr.com/800/600/lake,nature,birds?lock=206"
+             alt="Vransko jezero — prirodni park"
+             loading="lazy">
+      </div>
+
+      <div class="jezero-text">
+        <span class="eyebrow reveal">Naša destinacija</span>
+        <h2 class="reveal reveal-delay-1">Između dva svijeta</h2>
+        <div class="gold-rule reveal reveal-delay-2" style="margin-left:0;"></div>
+
+        <p class="reveal reveal-delay-2">
+          Pakoštane leže na uzanom pojasu dalmatinske obale između Jadranskog mora i Vranskog jezera — najvećeg prirodnog jezera u Hrvatskoj. Samo pet minuta pješice dijeli dva potpuno različita ekosustava.
+        </p>
+
+        <p class="reveal reveal-delay-3">
+          Vransko jezero, dugo 14 kilometara, dom je 57 vrsta ptica i zaštićeno je kao posebni zoološki rezervat. S jedne strane šljunčane plaže i bistro more, s druge trska, ribe i tišina jezera. Ova dvojnost oblikuje sve što kuhamo — riba iz mora i riba iz jezera, divljač iz šikare, povrće iz lokalnih vrtova.
+        </p>
+
+        <div class="jezero-stat reveal reveal-delay-4">
+          <div class="stat-item">
+            <div class="stat-num">14 km</div>
+            <div class="stat-label">Jezero</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">57</div>
+            <div class="stat-label">Vrsta ptica</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">5 min</div>
+            <div class="stat-label">More ↔ Jezero</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       GALERIJA
+  =========================== -->
+  <section id="galerija">
+    <div class="section-inner">
+      <div class="galerija-header">
+        <span class="eyebrow reveal">Dojmovi</span>
+        <h2 class="reveal reveal-delay-1">Galerija</h2>
+      </div>
+
+      <!-- Grapevine divider above gallery -->
+      <div class="vine-divider reveal reveal-delay-2" aria-hidden="true">
+        <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M10,38 C30,38 35,22 55,22 C70,22 75,32 90,30 C105,28 110,18 130,18 C148,18 155,28 175,26 C185,25 192,20 198,18"/>
+          <path d="M55,22 C52,14 48,8 44,5"/>
+          <path d="M90,30 C88,20 92,12 96,8"/>
+          <path d="M130,18 C128,10 132,4 136,2"/>
+          <path d="M44,5 C40,2 35,4 36,9 C37,14 42,14 44,10 C46,6 42,2 38,4"/>
+          <path d="M96,8 C92,4 87,6 88,11 C89,16 94,15 96,11 C98,7 94,3 90,5"/>
+          <path d="M136,2 C132,-1 127,1 128,6 C129,11 134,10 136,6 C138,2 134,-1 130,1"/>
+          <circle cx="58" cy="26" r="2.5"/>
+          <circle cx="63" cy="28" r="2"/>
+          <circle cx="61" cy="31" r="2.2"/>
+          <circle cx="148" cy="22" r="2.5"/>
+          <circle cx="153" cy="24" r="2"/>
+          <circle cx="151" cy="27" r="2.2"/>
+        </svg>
+      </div>
+
+      <div class="masonry-grid">
+        <div class="masonry-item reveal">
+          <img src="https://loremflickr.com/800/600/grilled,fish,croatia?lock=207"
+               alt="Riba s gradela"
+               loading="lazy">
+        </div>
+        <div class="masonry-item reveal reveal-delay-1">
+          <img src="https://loremflickr.com/600/800/vine,leaf,green?lock=208"
+               alt="Vinova loza"
+               loading="lazy">
+        </div>
+        <div class="masonry-item reveal reveal-delay-2">
+          <img src="https://loremflickr.com/800/600/konoba,stone,dalmatia?lock=209"
+               alt="Konoba kameni zid"
+               loading="lazy">
+        </div>
+        <div class="masonry-item reveal reveal-delay-1">
+          <img src="https://loremflickr.com/600/800/wine,homemade,rustic?lock=210"
+               alt="Domaće vino"
+               loading="lazy">
+        </div>
+        <div class="masonry-item reveal reveal-delay-2">
+          <img src="https://loremflickr.com/800/600/olive,oil,mediterranean?lock=211"
+               alt="Maslinovo ulje"
+               loading="lazy">
+        </div>
+        <div class="masonry-item reveal reveal-delay-3">
+          <img src="https://loremflickr.com/800/600/vransko,lake,nature?lock=212"
+               alt="Vransko jezero"
+               loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       REZERVIRAJ STOL
+  =========================== -->
+  <section id="rezerviraj">
+    <div class="section-inner narrow">
+      <span class="eyebrow reveal">Kontakt</span>
+      <h2 class="reveal reveal-delay-1">Dođite k nama</h2>
+      <div class="gold-rule reveal reveal-delay-2"></div>
+
+      <p class="rezerviraj-sub reveal reveal-delay-2">
+        Pozovite nas za rezervaciju stola.
+      </p>
+
+      <div class="reveal reveal-delay-3">
+        <a href="tel:+385919819721" class="phone-link">+385 91 981 9721</a>
+        <p class="rezerviraj-caption">Poziv · WhatsApp</p>
+      </div>
+
+      <div class="hours-table reveal reveal-delay-4">
+        <span class="hours-day">Pon – Pet</span>
+        <span class="hours-time">12:00 – 22:00</span>
+        <span class="hours-day">Subota</span>
+        <span class="hours-time">12:00 – 23:00</span>
+        <span class="hours-day">Nedjelja</span>
+        <span class="hours-time">12:00 – 21:00</span>
+      </div>
+
+      <p class="season-note reveal">Otvoreni travanj – listopad</p>
+    </div>
+  </section>
+
+  <!-- ===========================
+       KONTAKT & KARTA
+  =========================== -->
+  <section id="kontakt" style="padding:0;">
+    <div class="kontakt-inner">
+      <div class="kontakt-text">
+        <span class="eyebrow reveal">Gdje smo</span>
+        <h2 class="reveal reveal-delay-1">Pronađite nas</h2>
+
+        <div class="contact-item reveal reveal-delay-2">
+          <div class="contact-label">Adresa</div>
+          <div class="contact-value">
+            Pakoštane<br>
+            23211, Dalmacija<br>
+            Hrvatska
+          </div>
+        </div>
+
+        <div class="contact-item reveal reveal-delay-2">
+          <div class="contact-label">Telefon</div>
+          <div class="contact-value">
+            <a href="tel:+385919819721">+385 91 981 9721</a>
+          </div>
+        </div>
+
+        <div class="contact-item reveal reveal-delay-3">
+          <div class="contact-label">Radno vrijeme</div>
+          <div class="contact-value" style="font-size:16px; line-height:1.6;">
+            Pon–Pet: 12–22h<br>
+            Sub: 12–23h · Ned: 12–21h<br>
+            <em style="font-size:14px; color:var(--stone);">Travanj – Listopad</em>
+          </div>
+        </div>
+
+        <p class="directions-note reveal reveal-delay-4">
+          Pakoštane se nalaze između Zadra i Šibenika, uz obalu između Jadranskog mora i Vranskog jezera. Lako dostupni s autoceste A1 — izlaz Pirovac ili Benkovac. Parkiralište dostupno u blizini.
+        </p>
+      </div>
+
+      <div class="kontakt-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2868.123456789!2d15.5064!3d43.9057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sKonoba+Loza+Pakostane!5e0!3m2!1shr!2shr!4v1234567890"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Konoba Loza — Pakoštane karta">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       FOOTER
+  =========================== -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Konoba <em>Loza</em></div>
+        <div class="footer-address">
+          Pakoštane, 23211 Dalmacija<br>
+          Hrvatska<br>
+          <a href="tel:+385919819721" style="color:var(--terra);">+385 91 981 9721</a>
+        </div>
+      </div>
+
+      <div class="footer-center">
+        <!-- Footer grapevine SVG -->
+        <svg width="100" height="28" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="stroke:var(--vine-soft);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0.5;">
+          <path d="M10,38 C30,38 35,22 55,22 C70,22 75,32 90,30 C105,28 110,18 130,18 C148,18 155,28 175,26 C185,25 192,20 198,18"/>
+          <path d="M55,22 C52,14 48,8 44,5"/>
+          <path d="M96,8 C92,4 87,6 88,11 C89,16 94,15 96,11 C98,7 94,3 90,5"/>
+          <circle cx="58" cy="26" r="2.5"/>
+          <circle cx="63" cy="28" r="2"/>
+          <circle cx="61" cy="31" r="2.2"/>
+        </svg>
+
+        <p class="footer-tagline">Iz naše loze, na vaš stol.</p>
+        <p class="footer-copy">© 2025 Konoba Loza — Pakoštane, Dalmacija</p>
+      </div>
+
+      <div class="footer-right">
+        <p class="footer-copy" style="margin-bottom:12px;">Pratite godišnja doba, svježi ulov i naša vina.</p>
+        <div class="footer-phone">
+          <a href="tel:+385919819721">+385 91 981 9721</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===========================
+       MOBILE STICKY BAR
+  =========================== -->
+  <div class="mobile-bar" role="complementary" aria-label="Rezerviraj stol">
+    <a href="tel:+385919819721">Rezerviraj stol · +385 91 981 9721</a>
+  </div>
+
+  <!-- ===========================
+       SCRIPTS
+  =========================== -->
+  <!-- Lenis smooth scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ===========================
+      // REDUCED MOTION CHECK
+      // ===========================
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ===========================
+      // LENIS SMOOTH SCROLL
+      // ===========================
+      let lenis;
+      if (!prefersReduced) {
+        lenis = new Lenis({
+          duration: 1.4,
+          easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+          orientation: 'vertical',
+          smoothWheel: true
+        });
+
+        gsap.ticker.add(function(time) {
+          lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        lenis.on('scroll', ScrollTrigger.update);
+      }
+
+      // Smooth anchor scroll
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          var target = document.querySelector(this.getAttribute('href'));
+          if (!target) return;
+          e.preventDefault();
+          if (lenis) {
+            lenis.scrollTo(target, { offset: -76, duration: 1.2 });
+          } else {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          // Close mobile nav if open
+          closeMobileNav();
+        });
+      });
+
+      // ===========================
+      // HEADER SCROLL
+      // ===========================
+      var header = document.getElementById('site-header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 60) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      // ===========================
+      // HAMBURGER / MOBILE NAV
+      // ===========================
+      var hamburger = document.getElementById('hamburger');
+      var mobileNav = document.getElementById('mobile-nav');
+
+      function openMobileNav() {
+        mobileNav.classList.add('open');
+        hamburger.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+        if (lenis) lenis.stop();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileNav() {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        if (lenis) lenis.start();
+        document.body.style.overflow = '';
+      }
+
+      hamburger.addEventListener('click', function() {
+        if (mobileNav.classList.contains('open')) {
+          closeMobileNav();
+        } else {
+          openMobileNav();
+        }
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+          closeMobileNav();
+        }
+      });
+
+      // ===========================
+      // HERO IMAGES STAGGER FADE-IN
+      // ===========================
+      if (!prefersReduced) {
+        var heroItems = [
+          document.getElementById('hg1'),
+          document.getElementById('hg2'),
+          document.getElementById('hg3')
+        ].filter(Boolean);
+
+        heroItems.forEach(function(el, i) {
+          el.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+          el.style.transitionDelay = (0.2 + i * 0.15) + 's';
+        });
+
+        window.addEventListener('load', function() {
+          heroItems.forEach(function(el) {
+            el.classList.add('loaded');
+          });
+        });
+
+        // Fallback in case load already fired
+        if (document.readyState === 'complete') {
+          heroItems.forEach(function(el) {
+            el.classList.add('loaded');
+          });
+        }
+      } else {
+        // No animation — just show
+        ['hg1','hg2','hg3'].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.classList.add('loaded');
+        });
+      }
+
+      // ===========================
+      // H1 WORD REVEAL ON LOAD
+      // ===========================
+      if (!prefersReduced) {
+        var h1 = document.getElementById('hero-h1');
+        if (h1) {
+          // Split into words, preserving the <em> tag
+          // We'll do a simple approach: animate the whole h1 as one unit
+          gsap.from(h1, {
+            opacity: 0,
+            y: 30,
+            duration: 1.0,
+            ease: 'power3.out',
+            delay: 0.4
+          });
+
+          var tagline = h1.parentElement.querySelector('.hero-tagline');
+          if (tagline) {
+            gsap.from(tagline, {
+              opacity: 0,
+              y: 20,
+              duration: 0.9,
+              ease: 'power3.out',
+              delay: 0.7
+            });
+          }
+        }
+      }
+
+      // ===========================
+      // SECTION REVEALS (IntersectionObserver)
+      // ===========================
+      if (!prefersReduced) {
+        var revealObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.08,
+          rootMargin: '0px 0px -60px 0px'
+        });
+
+        document.querySelectorAll('.reveal, .reveal-left').forEach(function(el) {
+          revealObserver.observe(el);
+        });
+      } else {
+        // Show everything immediately
+        document.querySelectorAll('.reveal, .reveal-left').forEach(function(el) {
+          el.classList.add('in-view');
+        });
+      }
+
+      // ===========================
+      // GSAP SCROLLTRIGGER (additional)
+      // ===========================
+      if (!prefersReduced && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Timeline items stagger from left
+        var timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach(function(item, i) {
+          gsap.from(item, {
+            x: -20,
+            opacity: 0,
+            duration: 0.9,
+            ease: 'power3.out',
+            delay: i * 0.05,
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 82%',
+              toggleActions: 'play none none none'
+            }
+          });
+        });
+
+        // Subtle parallax on hero large image
+        var heroLarge = document.querySelector('.hero-grid-img.large img');
+        if (heroLarge) {
+          gsap.to(heroLarge, {
+            yPercent: 8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '#hero',
+              start: 'top top',
+              end: 'bottom top',
+              scrub: 1.5
+            }
+          });
+        }
+      }
+
+    })();
+  </script>
+
+</body>
+</html>
